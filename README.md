@@ -1,0 +1,1 @@
+# coinmind-landing
