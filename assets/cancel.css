@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.cancel-card {
+    background: white;
+    border-radius: 24px;
+    padding: 50px 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Крестик */
+.crossmark {
+    width: 80px;
+    height: 80px;
+    background: #fee2e2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 48px;
+    color: #dc2626;
+    font-weight: 300;
+    line-height: 1;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 12px;
+}
+
+p {
+    font-size: 16px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 32px;
+}
+
+/* Информация об оплате */
+.payment-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-item span {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.info-item strong {
+    color: #1a1a2e;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.info-item .cancelled {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* Кнопки */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.retry-btn {
+    background: #e5e7eb;
+    color: #1a1a2e;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.retry-btn:hover {
+    background: #d1d5db;
+    transform: translateY(-2px);
+}
+
+.telegram-btn {
+    background: #1a1a2e;
+    color: white;
+    border: none;
+    padding: 16px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.telegram-btn:hover {
+    background: #2d2d44;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(26, 26, 46, 0.2);
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .cancel-card {
+        padding: 32px 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .crossmark {
+        width: 60px;
+        height: 60px;
+        font-size: 36px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}

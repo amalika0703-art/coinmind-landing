@@ -1,42 +1,160 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Оплата</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата Premium | CoinMind</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .payment-container {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 { font-size: 28px; color: #1a1a2e; margin-bottom: 8px; }
+        .price { font-size: 48px; font-weight: 800; color: #1a1a2e; margin: 16px 0; }
+        .price span { font-size: 20px; font-weight: 400; color: #6b7280; }
+        .subtitle { color: #6b7280; margin-bottom: 24px; }
+        .features { text-align: left; margin: 24px 0; list-style: none; padding: 0; }
+        .features li { padding: 10px 0; border-bottom: 1px solid #f3f4f6; color: #1a1a2e; }
+        .features li:last-child { border-bottom: none; }
+        #paypal-button-container { margin: 20px 0; }
+        .back-link { display: inline-block; margin-top: 16px; color: #6b7280; text-decoration: none; font-size: 14px; }
+        .back-link:hover { color: #1a1a2e; }
+        .test-badge {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .test-credentials {
+            font-size: 12px;
+            color: #6b7280;
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            text-align: left;
+        }
+        .test-credentials strong {
+            color: #1a1a2e;
+        }
+    </style>
 </head>
 <body>
-    <h1>CoinMind Premium — 290 ₸</h1>
+
+<div class="payment-container">
+    
+    <div class="test-badge">🧪 ТЕСТОВЫЙ РЕЖИМ PayPal</div>
+    
+    <h1>💎 CoinMind Premium</h1>
+    
+    <div class="price">
+        2.90 USD
+        <span>/ месяц</span>
+    </div>
+    
+    <p class="subtitle">Полный доступ ко всем функциям</p>
+    
+    <ul class="features">
+        <li>✅ AI рекомендации по расходам</li>
+        <li>✅ Продвинутая аналитика</li>
+        <li>✅ Ранний доступ к новым функциям</li>
+        <li>✅ Приоритетная поддержка</li>
+    </ul>
+    
     <div id="paypal-button-container"></div>
+    
+    <div class="test-credentials">
+        <strong>📋 Для теста используйте:</strong><br>
+        Email: <strong>sb-eigzn51068093@personal.example.com</strong><br>
+        Пароль: <strong>Test123!</strong>
+    </div>
+    
+    <br>
+    <a href="index.html" class="back-link">← Вернуться на главную</a>
+    
+</div>
 
-    <script src="https://www.paypal.com/sdk/js?client-id=AUPPsGbFJt5PII6oqUNA9R7B5oinAFuTwyQwoZ6Ve5ExzSYVHwAPV_IOTX1HWXhqd5PkQ28d4aOkZclM&currency=USD"></script>
+<!-- ТЕСТОВЫЙ PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"></script>
 
-    <script>
+<script>
+    console.log('🧪 Тестовый PayPal загружен!');
+    
+    if (typeof paypal !== 'undefined') {
+        
         paypal.Buttons({
+            // СОЗДАЕМ ЗАКАЗ ПРЯМО В PayPal (БЕЗ БЭКЕНДА!)
             createOrder: function(data, actions) {
-                return fetch('http://localhost:3000/api/orders', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        amount: '2.90',
-                        currency: 'USD'
-                    })
-                })
-                .then(res => res.json())
-                .then(order => order.id);
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '2.90',
+                            currency_code: 'USD'
+                        },
+                        description: 'CoinMind Premium - 1 месяц'
+                    }],
+                    application_context: {
+                        shipping_preference: 'NO_SHIPPING'
+                    }
+                });
             },
+            
+            // КОГДА ОПЛАТА УСПЕШНА - СРАЗУ ПЕРЕКИДЫВАЕМ НА SUCCESS.HTML
             onApprove: function(data, actions) {
-                return fetch('http://localhost:3000/api/orders/' + data.orderID + '/capture', {
-                    method: 'POST'
-                })
-                .then(res => res.json())
-                .then(() => {
-                    alert('✅ Оплата успешна!');
+                return actions.order.capture().then(function(details) {
+                    console.log('✅ Платеж успешен!', details);
+                    
+                    // Показываем уведомление
+                    alert('✅ Оплата успешна!\n\n' +
+                          '👤 ' + details.payer.name.given_name + ' ' + details.payer.name.surname + '\n' +
+                          '💵 ' + details.purchase_units[0].amount.value + ' USD');
+                    
+                    // ПРЯМОЕ ПЕРЕНАПРАВЛЕНИЕ НА SUCCESS.HTML
                     window.location.href = 'success.html';
                 });
             },
+            
+            // ЕСЛИ ОТМЕНИЛИ - НА CANCEL.HTML
+            onCancel: function(data) {
+                console.log('❌ Оплата отменена');
+                window.location.href = 'cancel.html';
+            },
+            
+            // ЕСЛИ ОШИБКА
             onError: function(err) {
-                alert('❌ Ошибка: ' + err.message);
+                console.error('❌ Ошибка:', err);
+                alert('❌ Произошла ошибка. Проверьте консоль (F12)');
             }
+            
         }).render('#paypal-button-container');
-    </script>
+        
+    } else {
+        document.getElementById('paypal-button-container').innerHTML = 
+            '<p style="color: red;">⚠️ PayPal не загружен</p>';
+    }
+</script>
+
 </body>
 </html>
