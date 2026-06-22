@@ -174,7 +174,7 @@ function goHome() {
 
 // Открыть Telegram
 function openTelegram() {
-    window.open('https://t.me/YOUR_BOT_USERNAME', '_blank');
+    window.open('https://t.me/Smart_budgetttttt_bot', '_blank');
 }
 
 // Плавный скролл к секции
@@ -224,4 +224,4 @@ if (!('IntersectionObserver' in window)) {
     });
 }
 
-console.log('🚀 CoinMind приложение запущено!');
+console.log('🚀 CoinMind BOT запущено!');
