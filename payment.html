@@ -128,7 +128,8 @@
                           '💵 ' + details.purchase_units[0].amount.value + ' USD');
                     
                     // ПРЯМОЕ ПЕРЕНАПРАВЛЕНИЕ НА SUCCESS.HTML
-                    window.location.href = 'https://mycashbot.online/success.html?status=success&order_id=' + data.orderID;
+                    const userId = '12345';
+                    window.location.href = 'https://mycashbot.online/success.html?status=success&order_id=' + data.orderID + '&user_id=' + userId;
                 });
             },
             

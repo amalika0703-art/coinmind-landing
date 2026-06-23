@@ -51,6 +51,31 @@
     </button>
 
 </div>
+<script>
+    // Получаем параметры из URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('user_id');
+    const orderId = urlParams.get('order_id');
 
+    console.log('🔍 Данные оплаты:', { userId, orderId });
+
+    if (userId && orderId) {
+        // Отправляем запрос на бэкенд для активации премиума
+        fetch('https://mycashbot.online/api/activate-premium', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: userId, order_id: orderId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('✅ Премиум активирован:', data);
+        })
+        .catch(error => {
+            console.error('❌ Ошибка активации:', error);
+        });
+    } else {
+        console.warn('⚠️ Не удалось найти данные пользователя');
+    }
+</script>
 </body>
 </html>
