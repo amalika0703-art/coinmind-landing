@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FK8VRK7SK8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FK8VRK7SK8');
+    </script>
+    <!-- Конец Google tag -->
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoinMind Premium</title>
@@ -23,7 +33,7 @@
             <a href="#premium">Premium</a>
         </div>
 
-         <button class="nav-btn" onclick="window.location.href='payment.html'">
+        <button class="nav-btn" onclick="handleStartClick()">
             Начать
         </button>
 
@@ -51,7 +61,7 @@
 
             <div class="hero-buttons">
 
-                <button class="primary-btn" onclick="window.location.href='payment.html'">
+                <button class="primary-btn" onclick="handlePremiumClick()">
                     Получить Premium →
                 </button>
 
@@ -175,7 +185,7 @@
                 <li>✓ Приоритетная поддержка</li>
             </ul>
 
-            <button class="buy-btn" onclick="window.location.href='payment.html'">
+            <button class="buy-btn" onclick="handlePremiumClick()">
                 Купить Premium →
             </button>
 
@@ -183,7 +193,26 @@
 
     </section>
 
-    <script src="app.js"></script>
+    <!-- ФУНКЦИИ ДЛЯ ОТСЛЕЖИВАНИЯ СОБЫТИЙ -->
+    <script>
+        // Клик по кнопке "Начать" в навигации
+        function handleStartClick() {
+            gtag('event', 'start_button_click', {
+                'page_location': window.location.href,
+                'button_location': 'navigation'
+            });
+            window.location.href = 'payment.html';
+        }
+
+        // Клик по кнопкам "Получить Premium" и "Купить Premium"
+        function handlePremiumClick() {
+            gtag('event', 'premium_button_click', {
+                'page_location': window.location.href,
+                'button_location': 'page_content'
+            });
+            window.location.href = 'payment.html';
+        }
+    </script>
 
 </body>
 </html>

@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FK8VRK7SK8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FK8VRK7SK8');
+    </script>
+    <!-- Конец Google tag -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оплата успешна | CoinMind</title>
@@ -45,12 +55,29 @@
 
     <button
         class="telegram-btn"
-         onclick="window.open('https://t.me/Smart_budgetttttt_bot', '_blank')">
+        onclick="window.open('https://t.me/Smart_budgetttttt_bot', '_blank')">
 
         Перейти в Telegram →
     </button>
 
 </div>
+
+<!-- ДОБАВЛЯЕМ СОБЫТИЕ PURCHASE -->
+<script>
+    // Отправляем событие "покупка совершена" при загрузке страницы
+    gtag('event', 'purchase', {
+        'transaction_id': 'TXN_' + Date.now(),
+        'currency': 'KZT',
+        'value': 290,
+        'items': [{
+            'item_name': 'CoinMind Premium - 1 месяц',
+            'price': 290,
+            'quantity': 1
+        }]
+    });
+
+    console.log('✅ Событие purchase отправлено в GA4!');
+</script>
 
 </body>
 </html>

@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FK8VRK7SK8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FK8VRK7SK8');
+    </script>
+    <!-- Конец Google tag -->
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Оплата Premium | CoinMind</title>
@@ -85,8 +95,6 @@
     
     <div id="paypal-button-container"></div>
     
-    
-    
     <br>
     <a href="index.html" class="back-link">← Вернуться на главную</a>
     
@@ -101,8 +109,14 @@
     if (typeof paypal !== 'undefined') {
         
         paypal.Buttons({
-            // СОЗДАЕМ ЗАКАЗ ПРЯМО В PayPal (БЕЗ БЭКЕНДА!)
+            // СОЗДАЕМ ЗАКАЗ
             createOrder: function(data, actions) {
+                // Отправляем событие "начало оформления"
+                gtag('event', 'begin_checkout', {
+                    'currency': 'USD',
+                    'value': 0.59
+                });
+                
                 return actions.order.create({
                     purchase_units: [{
                         amount: {
@@ -117,30 +131,57 @@
                 });
             },
             
-            // КОГДА ОПЛАТА УСПЕШНА - СРАЗУ ПЕРЕКИДЫВАЕМ НА SUCCESS.HTML
+            // КОГДА ОПЛАТА УСПЕШНА
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(details) {
                     console.log('✅ Платеж успешен!', details);
+                    
+                    // Отправляем событие "покупка совершена"
+                    gtag('event', 'purchase', {
+                        'transaction_id': data.orderID,
+                        'currency': 'USD',
+                        'value': 0.59,
+                        'items': [{
+                            'item_name': 'CoinMind Premium - 1 месяц',
+                            'price': 0.59,
+                            'quantity': 1
+                        }]
+                    });
                     
                     // Показываем уведомление
                     alert('✅ Оплата успешна!\n\n' +
                           '👤 ' + details.payer.name.given_name + ' ' + details.payer.name.surname + '\n' +
                           '💵 ' + details.purchase_units[0].amount.value + ' USD');
                     
-                    // ПРЯМОЕ ПЕРЕНАПРАВЛЕНИЕ НА SUCCESS.HTML
+                    // ПЕРЕНАПРАВЛЕНИЕ НА SUCCESS.HTML
                     window.location.href = 'https://mycashbot.online/success.html?status=success&order_id=' + data.orderID;
                 });
             },
             
-            // ЕСЛИ ОТМЕНИЛИ - НА CANCEL.HTML
+            // ЕСЛИ ОТМЕНИЛИ
             onCancel: function(data) {
                 console.log('❌ Оплата отменена');
+                
+                // Отправляем событие "отмена оплаты"
+                gtag('event', 'checkout_cancelled', {
+                    'currency': 'USD',
+                    'value': 0.59
+                });
+                
                 window.location.href = 'cancel.html';
             },
             
             // ЕСЛИ ОШИБКА
             onError: function(err) {
                 console.error('❌ Ошибка:', err);
+                
+                // Отправляем событие "ошибка оплаты"
+                gtag('event', 'payment_error', {
+                    'currency': 'USD',
+                    'value': 0.59,
+                    'error_message': err.message || 'Unknown error'
+                });
+                
                 alert('❌ Произошла ошибка. Проверьте консоль (F12)');
             }
             
